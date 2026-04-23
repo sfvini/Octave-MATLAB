@@ -1,34 +1,38 @@
-# Método de Newton
+% Sistema de equações
+F = @(x,y) [x^2 + x*y^2 - 2; x*y - 3*x*y^3 + 4];
 
-% Definindo as funções para análise
-F = @(x,y) [x*x+x*y*y-2 ; x*y-3*x*y*y*y+4];
+% Jacobiana
+J = @(x,y) [2*x + y^2, 2*x*y;
+            y - 3*y^3, x - 9*x*y^2];
 
-% Jacobiano
-J = @(x,y) [2*x+y*y , 2*x*y ; y-3*y*y*y , x-9*x*y*y];
+% Chute inicial
+X_atual = [1; 0];
 
-% chute inicial
-X0 = [1;0];
-x = X0(1); % guardando x
-y = X0(2); % guardando y
+% Parâmetros
+tolerancia = 0.1;
+max_iteracoes = 100;
 
-% primeira iteração do método
-X = X0 - inv(J(x,y))*F(x,y);
+erro = 1;
+iteracao = 0;
 
-erro = sum(abs(X-X0));
-
-while (erro>0.1)  
- % vai para o proximo valor 
- X0 = X;
- x = X0(1); 
- y = X0(2);
-
- % calcula novamente o proximo valor 
- X = X0 - inv(J(x,y))*F(x,y);
-
- % calculo da norma 1 (distancia entre dois pontos) 
- erro = sum(abs(X-X0)); 
- % repete
+while erro > tolerancia && iteracao < max_iteracoes
+    
+    x = X_atual(1);
+    y = X_atual(2);
+    
+    % Calcula próximo vetor
+    X_proximo = X_atual - inv(J(x,y)) * F(x,y);
+    
+    % Erro (norma 1)
+    erro = sum(abs(X_proximo - X_atual));
+    
+    % Atualiza
+    X_atual = X_proximo;
+    
+    iteracao = iteracao + 1;
 end
 
-% agora temos o valor aproximado da raiz do sistema
-X
+% Resultado
+printf('\n=== Newton (Sistema) ===\n');
+disp('Solução:');
+disp(X_atual);
