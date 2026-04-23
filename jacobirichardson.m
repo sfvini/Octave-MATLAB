@@ -1,29 +1,40 @@
-% Método de Jacobi-Richardson
+A = [10 2 1; 1 5 1; 2 3 10];
+b = [7; -8; 6];
 
-a=[10 2 1; 1 5 1; 2 3 10]; % 3x3
-b=[7; -8; 6]; % 3x1
+n = length(b);
 
-%%DIVISÃO DAS MATRIZES PELO ELEMENTO DA DIAGONAL PRINCIPAL
-
-[m n]=size(a);
-
-  for i=1:m
-      divisor = a(i,i);
-      b(i,:) = b(i,:)/divisor;
-      a(i,:) = a(i,:)/divisor;
-      a(i,i) = 0;
-  end
-
-%chute inicial
-x0 = [0;0;0]; % antigo 3x1
-x1 = b-a*x0; % novo 3x1
-
-erro = max(abs(x1-x0));
-
-while(erro > 0.01)
-    x1 = b-a*x0;
-    erro = max(abs(x1-x0));
-    x0 = x1; % atualiza o proximo chute inicial
+% Normalização da matriz
+for i = 1:n
+    b(i) = b(i) / A(i,i);
+    A(i,:) = A(i,:) / A(i,i);
+    A(i,i) = 0;
 end
 
-x1
+% Chute inicial
+x_atual = zeros(n,1);
+
+% Parâmetros
+tolerancia = 1e-2;
+max_iteracoes = 100;
+
+erro = 1;
+iteracao = 0;
+
+while erro > tolerancia && iteracao < max_iteracoes
+    
+    % Calcula nova aproximação
+    x_proximo = b - A * x_atual;
+    
+    % Erro (norma infinito)
+    erro = max(abs(x_proximo - x_atual));
+    
+    % Atualiza
+    x_atual = x_proximo;
+    
+    iteracao = iteracao + 1;
+end
+
+% Resultado
+printf('\n=== Jacobi ===\n');
+disp('Solução:');
+disp(x_atual);
