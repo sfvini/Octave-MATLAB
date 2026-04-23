@@ -1,32 +1,58 @@
-# Método de Newton e Secante
+% Função e derivada
+funcao = @(x) x^2 + 2*x - 2;
+derivada = @(x) 2*x + 2;
 
-f = @(x) x^2 + 2*x - 2;
-df = @(x) 2*x + 2;        # Derivada de f(x) necessária para Newton
+% Parâmetros
+tolerancia = 1e-4;
+max_iteracoes = 100;
 
-# --- PARTE 1: MÉTODO DA SECANTE (Seu código original) ---
+%% -------- SECANTE --------
 x0 = 0;
 x1 = 1;
-tolerancia = 0.0001;
-erro_sec = 1;
 
-while (erro_sec > tolerancia)
-    x_novo = x1 - f(x1) * (x1 - x0) / (f(x1) - f(x0));
-    erro_sec = abs(x_novo - x1);
+erro = 1;
+iteracao = 0;
+
+while erro > tolerancia && iteracao < max_iteracoes
+    
+    % Fórmula da secante
+    x_novo = x1 - funcao(x1) * (x1 - x0) / (funcao(x1) - funcao(x0));
+    
+    % Cálculo do erro
+    erro = abs(x_novo - x1);
+    
+    % Atualiza valores
     x0 = x1;
     x1 = x_novo;
+    
+    iteracao = iteracao + 1;
 end
 
-# --- PARTE 2: MÉTODO DE NEWTON ---
-xn = 1;                   # Newton precisa de apenas 1 chute inicial
-erro_newton = 1;
+raiz_secante = x1;
 
-while (erro_newton > tolerancia)
-    xn_proximo = xn - f(xn) / df(xn);
+%% -------- NEWTON --------
+x_atual = 1;
 
-    erro_newton = abs(xn_proximo - xn);
-    xn = xn_proximo;
+erro = 1;
+iteracao = 0;
+
+while erro > tolerancia && iteracao < max_iteracoes
+    
+    % Fórmula de Newton
+    x_proximo = x_atual - funcao(x_atual) / derivada(x_atual);
+    
+    % Erro
+    erro = abs(x_proximo - x_atual);
+    
+    % Atualiza
+    x_atual = x_proximo;
+    
+    iteracao = iteracao + 1;
 end
 
----
-printf('Raiz pela Secante: %.4f\n', x1);
-printf('Raiz por Newton:  %.4f\n', xn);
+raiz_newton = x_atual;
+
+% Resultado
+printf('\n=== Secante e Newton ===\n');
+printf('Raiz (Secante): %.6f\n', raiz_secante);
+printf('Raiz (Newton):  %.6f\n', raiz_newton);
