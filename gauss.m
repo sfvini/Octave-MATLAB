@@ -1,6 +1,3 @@
-clc;
-clear;
-
 % Define a matriz de coeficientes (A) e o vetor de termos independentes (B)
 A = [2 -3 1; 4 -6 -1; 1 2 1];
 B = [-5; -7; 4];
