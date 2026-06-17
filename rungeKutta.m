@@ -1,42 +1,25 @@
-# MÉTODO DE Runge-Kutta
-# EXEMPLO DE IMPLEMENTAÇÃO QUANDO SABEMOS A RESPOSTA DA EDO
+clear all; clc;
 
-clear all; close all; clc;
+% Configurações da Questão 5 - Prova 2
+n = 4;                 % Número de iterações
+h = 1/n;               % Passo (0.25)
+x = 0;                 % x inicial
+y = 1;                 % y inicial (condição inicial)
 
-ERRO = size(10);
-Hs = size(10);
+% Definição da EDO da prova
+f = @(x, y) -exp(y) + (x + 1).^2; 
 
-f = @(x, y) y;
-
-for j = 1 : 10
-  h = 0.5 / (2^j);
-  x = [0 : h : 1];
-  y = zeros(size(x));
-
-  y(1) = 1;
-
-  for i = 2 : size(y,2)
-    k1 = f(x(i-1), y(i-1));
-    k2 = f(x(i-1) + 0.5*h, y(i-1) + 0.5*h*k1);
-    k3 = f(x(i-1)+0.5*h, y(i-1) + 0.5*h*k2);
-    k4 = f(x(i-1)+h, y(i-1)+h*k3);
-    y(i) = y(i-1) + (h/6)*(k1 + 2*k2 + 2*k3 + k4);
-    final = y(i);
-  endfor
-  final;
-  erro = max(abs(e - y(end)));
-
-  ERRO(j) = erro;
-  Hs(j) = h;
-
-endfor
-
-final
-
-plot(Hs, ERRO);
-LogHs = log(Hs);
-LogERRO = log(ERRO);
-plot(log(Hs), log(ERRO))
-deltaERRO = (LogERRO(end) - LogERRO(1))
-deltaHs = LogHs(end) - LogHs(1)
-coeficiente = deltaERRO / deltaHs'
+% Loop de cálculo do Runge-Kutta de 4ª Ordem
+for i = 1:n
+    K1 = f(x, y);
+    K2 = f(x + h/2, y + h*K1/2);
+    K3 = f(x + h/2, y + h*K2/2);
+    K4 = f(x + h, y + h*K3);
+    
+    % Atualização do valor de y e x
+    y = y + h*(K1 + 2*K2 + 2*K3 + K4)/6;
+    x = x + h;
+    
+    % Imprime o resultado numérico de cada iteração
+    fprintf('Iteração %d | x = %.2f | y = %.6f\n', i, x, y);
+end
