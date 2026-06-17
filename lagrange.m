@@ -1,5 +1,3 @@
-% Método que serve para aproximar funções dado um conjunto de pontos
-
 % Você define os pontos aqui. O código se ajusta ao tamanho dos vetores.
 X = [1, 2, 4]; 
 Y = [2, 3, 1];
@@ -28,4 +26,4 @@ for i = 1:n
     Px = Px + Y(i) * Li;
 end
 
-fprintf('Resultado da interpolação dinâmica para x = %0.1f: %.4f\n', x_alvo, Px);
+fprintf('Resultado = %0.1f: %.4f\n', x_alvo, Px);
