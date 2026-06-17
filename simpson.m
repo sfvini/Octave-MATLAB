@@ -18,3 +18,23 @@ area = (h / 3) * (f(ponto(1)) + 4 * soma_impares + 2 * soma_pares + f(ponto(end)
 
 disp('Resultado da Integral:');
 disp(area);
+
+
+
+
+  
+% Dados da tabela fornecida na prova
+t = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20];
+v = [0.0, 16.8, 42.4, 76.8, 120.0, 172.0, 232.8, 302.4, 380.8, 468.0, 564.0];
+
+% O passo h é o intervalo de tempo entre as medições
+h = 2;
+
+% Na Regra de Simpson, a fórmula é: (h/3) * (f(x0) + 4*f(impares) + 2*f(pares) + f(xn))
+soma_impares = sum(v(2:2:end-1));
+soma_pares = sum(v(3:2:end-2));
+
+% Aplicação final da fórmula de Simpson 1/3
+altura = (h / 3) * (v(1) + 4 * soma_impares + 2 * soma_pares + v(end));
+
+fprintf('A altura do foguete após 20 segundos é: %.2f pés\n', altura);
